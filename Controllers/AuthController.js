@@ -100,29 +100,52 @@ module.exports.search = async (req, res, next) => {
 
 module.exports.Edit = async (req, res, next) => {
   try {
-    const { email, password, name, bio, gravatar, location, fieldOfInterest, seeking, techStack, githubURL, twitterURL, websiteURL, linkedinURL } = req.body;
+    const { oldemail, email, password, name, bio, gravatar, location, fieldOfInterest, seeking, techStack, githubURL, twitterURL, websiteURL, linkedinURL } = req.body.editForm;
 
-    const existingUser = await studentModel.findOne({ email });
+    const validProps = {};
 
-    if (existingUser) {
-      return res.json({ message: "Student already exists" });
+    if(email){
+      validProps.email = email;
     }
+    if(password){
+      validProps.password = password;
+    }
+    if(name){
+      validProps.name = name;
+    }
+    if(bio){
+      validProps.bio = bio;
+    }
+    if(gravatar){
+      validProps.gravatar = gravatar;
+    }
+    if(location){
+      validProps.location = location;
+    }
+    if(fieldOfInterest){
+      validProps.fieldOfInterest = fieldOfInterest;
+    }
+    if(seeking){
+      validProps.seeking = seeking;
+    }
+    if(techStack){
+      validProps.techStack = techStack;
+    }
+    if(githubURL){
+      validProps.githubURL = githubURL;
+    }
+    if(twitterURL){
+      validProps.twitterURL = twitterURL;
+    }
+    if(websiteURL){
+      validProps.websiteURL = websiteURL;
+    }
+    
+    const updated = await studentModel.findOneAndUpdate({ email: oldemail }, { $set: validProps }, { new: true });
 
-    const user = await studentModel.create({ email, password, name, bio, gravatar, location, fieldOfInterest, seeking, techStack, githubURL, twitterURL, websiteURL, linkedinURL });
+    return res.status(200).json(updated);
 
-    const token = createSecretToken(user._id);
-
-    // console.log("USER-->", user);
-
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-      maxAge: 30 * 1000,
-    });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
-    next();
+    
   } catch (error) {
     console.error(error);
   }
