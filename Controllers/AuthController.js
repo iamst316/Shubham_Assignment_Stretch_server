@@ -16,7 +16,7 @@ module.exports.Signup = async (req, res, next) => {
 
     const token = createSecretToken(user._id);
 
-    // console.log("USER-->", user);
+    // //console.log("USER-->", user);
 
     res.cookie("token", token, {
       withCredentials: true,
@@ -41,7 +41,7 @@ module.exports.Login = async (req, res, next) => {
     }
     const user = await studentModel.findOne({ email });
 
-    // console.log(user);
+    // //console.log(user);
 
     if (!user) {
       return res.json({ message: 'Incorrect password or email' })
@@ -53,7 +53,7 @@ module.exports.Login = async (req, res, next) => {
     }
 
     const token = createSecretToken(user._id);
-    // console.log("to be logged-->",user);
+    // //console.log("to be logged-->",user);
 
     res.cookie("token", token, {
       withCredentials: true,
@@ -148,7 +148,7 @@ module.exports.Edit = async (req, res, next) => {
 
     const newOne = await studentModel.findOne({_id});
 
-    console.log("updated",newOne);
+    //console.log("updated",newOne);
 
     return res.status(200).json({ message: "Student updated successfully", success: true, user: newOne});
     
@@ -159,7 +159,7 @@ module.exports.Edit = async (req, res, next) => {
 
 module.exports.Delete = async (req, res, next) => {
   try {
-    // console.log(req);
+    // //console.log(req);
 
     const { email } = req.params;
 
