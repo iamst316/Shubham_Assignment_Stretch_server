@@ -8,7 +8,7 @@ router.post('/login', Login);
 router.get("/all", getStudents);
 router.post("/search", search);
 router.patch("/edit", Edit);
-router.delete("/delete", Delete);
+router.delete("/delete/:email", Delete);
 
 module.exports = router;
 

@@ -100,7 +100,7 @@ module.exports.search = async (req, res, next) => {
 
 module.exports.Edit = async (req, res, next) => {
   try {
-    const { oldemail, email, password, name, bio, gravatar, location, fieldOfInterest, seeking, techStack, githubURL, twitterURL, websiteURL, linkedinURL } = req.body.editForm;
+    const { _id, email, password, name, bio, gravatar, location, fieldOfInterest, seeking, techStack, githubURL, twitterURL, websiteURL, linkedinURL } = req.body.editForm;
 
     const validProps = {};
 
@@ -140,11 +140,17 @@ module.exports.Edit = async (req, res, next) => {
     if(websiteURL){
       validProps.websiteURL = websiteURL;
     }
+    if(linkedinURL){
+      validProps.linkedinURL = linkedinURL;
+    }
     
-    const updated = await studentModel.findOneAndUpdate({ email: oldemail }, { $set: validProps }, { new: true });
+    await studentModel.findOneAndUpdate({ _id: _id }, { $set: validProps });
 
-    return res.status(200).json(updated);
+    const newOne = await studentModel.findOne({_id});
 
+    console.log("updated",newOne);
+
+    return res.status(200).json({ message: "Student updated successfully", success: true, user: newOne});
     
   } catch (error) {
     console.error(error);
@@ -153,9 +159,11 @@ module.exports.Edit = async (req, res, next) => {
 
 module.exports.Delete = async (req, res, next) => {
   try {
-    const { email } = req.body;
+    // console.log(req);
 
-    const existingUser = await studentModel.deleteOne({ email });
+    const { email } = req.params;
+
+    await studentModel.deleteOne({ email });
 
     res
       .status(201)
