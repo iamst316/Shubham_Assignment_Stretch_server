@@ -19,19 +19,21 @@ app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
 
-app.use(
-  cors({
-    origin: ["https://cheery-blini-93a516.netlify.app/"],
-    methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
-    credentials: true,
-    exposedHeaders: ['Set-Cookie'],
-  })
-);
+// app.use(
+//   cors({
+//     origin: ["https://cheery-blini-93a516.netlify.app/"],
+//     methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
+//     credentials: true,
+//     exposedHeaders: ['Set-Cookie'],
+//   })
+// );
 
-app.use(  (req,res)=>{
-  res.header('Access-Control-Allow-Origin', 'https://delightful-capybara-79d84c.netlify.app');
-}
-)
+// app.use(  (req,res)=>{
+//   res.header('Access-Control-Allow-Origin', 'https://delightful-capybara-79d84c.netlify.app');
+// }
+// )
+
+app.use(cors());
 app.use(cookieParser());
 
 app.use(express.json());
