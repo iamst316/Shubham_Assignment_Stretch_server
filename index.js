@@ -27,6 +27,11 @@ app.use(
     exposedHeaders: ['Set-Cookie'],
   })
 );
+
+app.use(  (req,res)=>{
+  res.header('Access-Control-Allow-Origin', 'https://delightful-capybara-79d84c.netlify.app');
+}
+)
 app.use(cookieParser());
 
 app.use(express.json());
